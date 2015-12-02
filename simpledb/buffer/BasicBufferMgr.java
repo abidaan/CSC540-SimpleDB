@@ -105,7 +105,14 @@ class BasicBufferMgr {
       Buffer buff = chooseUnpinnedBuffer();
       if (buff == null)
          return null;
-      buff.assignToNew(filename, fmtr);
+      Block newBlock = buff.assignToNew(filename, fmtr);
+      Iterator<Map.Entry<Block,Buffer>> iterator = bufferPoolMap.entrySet().iterator();
+      while(iterator.hasNext()){
+    	  Map.Entry<Block, Buffer> entry = iterator.next();
+    	  if(entry.getValue().equals(buff))
+    		  iterator.remove();
+      }
+      bufferPoolMap.put(newBlock, buff);
       numAvailable--;
       buff.pin();
       return buff;

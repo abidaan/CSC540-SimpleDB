@@ -195,11 +195,13 @@ public class Buffer {
     * of the previous page are first written to disk.
     * @param filename the name of the file
     * @param fmtr a page formatter, used to initialize the page
+    * @return blk the new block that was created
     */
-   void assignToNew(String filename, PageFormatter fmtr) {
+   Block assignToNew(String filename, PageFormatter fmtr) {
       flush();
       fmtr.format(contents);
       blk = contents.append(filename);
       pins = 0;
+      return blk;
    }
 }
