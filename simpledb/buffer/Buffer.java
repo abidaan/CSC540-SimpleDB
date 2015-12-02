@@ -110,6 +110,13 @@ public class Buffer {
    public Block block() {
       return blk;
    }
+   
+   /**
+    * Returns the logSequenceNumber
+    */
+   public int getLSN(){
+	   return logSequenceNumber;
+   }
 
    /**
     * Writes the page to its disk block if the
