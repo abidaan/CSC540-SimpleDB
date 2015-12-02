@@ -121,4 +121,8 @@ public class BufferMgr {
    private boolean waitingTooLong(long starttime) {
       return System.currentTimeMillis() - starttime > MAX_TIME;
    }
+   
+   public boolean containsMapping(Block blk){
+	   return bufferMgr.containsMapping(blk);
+   }
 }
