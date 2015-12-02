@@ -3,6 +3,7 @@ package simpledb.buffer;
 import simpledb.file.*;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Manages the pinning and unpinning of buffers to blocks.
@@ -10,7 +11,7 @@ import java.util.HashMap;
  *
  */
 class BasicBufferMgr {
-   private Buffer[] bufferpool;
+   //private Buffer[] bufferpool;
    private int numAvailable;
    private Map<Block, Buffer> bufferPoolMap;
    
@@ -28,11 +29,13 @@ class BasicBufferMgr {
     * @param numbuffs the number of buffer slots to allocate
     */
    BasicBufferMgr(int numbuffs) {
-      bufferpool = new Buffer[numbuffs];
-      numAvailable = numbuffs;
-      for (int i=0; i<numbuffs; i++)
-         bufferpool[i] = new Buffer();
-      
+      /**
+       * bufferpool = new Buffer[numbuffs];
+       * numAvailable = numbuffs;
+       * for (int i=0; i<numbuffs; i++)
+       * 	bufferpool[i] = new Buffer(); 
+       */
+	  
       bufferPoolMap = new HashMap<Block, Buffer>(numbuffs);
       int initializationBlockNumber = -1;
       numAvailable = numbuffs;
@@ -74,7 +77,14 @@ class BasicBufferMgr {
          buff = chooseUnpinnedBuffer();
          if (buff == null)
             return null;
-         buff.assignToBlock(blk);
+         //buff.assignToBlock(blk);
+         Iterator<Map.Entry<Block,Buffer>> iterator = bufferPoolMap.entrySet().iterator();
+         while(iterator.hasNext()){
+       	  Map.Entry<Block, Buffer> entry = iterator.next();
+       	  if(entry.getValue().equals(buff))
+       		  iterator.remove();
+         }
+         bufferPoolMap.put(blk, buff);
       }
       if (!buff.isPinned())
          numAvailable--;
@@ -166,5 +176,13 @@ class BasicBufferMgr {
 		   else
 			   return unmodifiedReplacementBuffer;
 	   }
+   }
+   
+   /**
+    * Returns true if the Map contains a mapping
+    * for the block.
+    */
+   boolean containsMapping(Block blk){
+	   return bufferPoolMap.containsKey(blk);
    }
 }
