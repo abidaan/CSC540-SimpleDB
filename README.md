@@ -6,4 +6,4 @@
 3. Vipul Vaibhav (vvaibha)
 
 ###Link to Repository
-[Repo](https://github.com/abidaan/CSC540-SimpleDB "SimpleDB")
+[SimpleDB](https://github.com/abidaan/CSC540-SimpleDB)
