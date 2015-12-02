@@ -47,6 +47,7 @@ public class Buffer {
     * @return the integer value at that offset
     */
    public int getInt(int offset) {
+	  numOfReads += 1;
       return contents.getInt(offset);
    }
 
@@ -59,6 +60,7 @@ public class Buffer {
     * @return the string value at that offset
     */
    public String getString(int offset) {
+	  numOfReads += 1;
       return contents.getString(offset);
    }
 
@@ -81,6 +83,7 @@ public class Buffer {
       if (lsn >= 0)
 	      logSequenceNumber = lsn;
       contents.setInt(offset, val);
+      numOfWrites += 1;
    }
 
    /**
@@ -102,6 +105,7 @@ public class Buffer {
       if (lsn >= 0)
 	      logSequenceNumber = lsn;
       contents.setString(offset, val);
+      numOfWrites += 1;
    }
 
    /**
@@ -131,7 +135,6 @@ public class Buffer {
       if (modifiedBy >= 0) {
          SimpleDB.logMgr().flush(logSequenceNumber);
          contents.write(blk);
-         numOfWrites += 1;
          modifiedBy = -1;
       }
    }
@@ -188,7 +191,6 @@ public class Buffer {
       flush();
       blk = b;
       contents.read(blk);
-      numOfReads += 1;
       pins = 0;
    }
 
