@@ -134,10 +134,37 @@ class BasicBufferMgr {
 		return null;
    }
    
-   private Buffer chooseUnpinnedBuffer() {
-      for (Buffer buff : bufferpool)
-         if (!buff.isPinned())
-         return buff;
-      return null;
+//   private Buffer chooseUnpinnedBuffer() {
+//      for (Buffer buff : bufferpool)
+//         if (!buff.isPinned())
+//         return buff;
+//      return null;
+//   }
+   
+   private Buffer chooseUnpinnedBuffer(){
+	   if(bufferPoolMap.containsKey("placeholder"))
+		   return bufferPoolMap.get("placeholder");
+	   else {
+		   int leastPositiveLSN = Integer.MAX_VALUE;
+		   boolean modifiedExists = false;
+		   Buffer modifiedReplacementBuffer = null, unmodifiedReplacementBuffer = null;
+		   for(Buffer buff: bufferPoolMap.values()){
+			   if(!buff.isPinned()){
+				   if(buff.isModified()){
+					   modifiedExists = true;
+					   if(buff.getLSN() < leastPositiveLSN){
+						   leastPositiveLSN = buff.getLSN();
+						   modifiedReplacementBuffer = buff;
+					   }
+				   }
+				   else
+					   unmodifiedReplacementBuffer = buff;
+			   }
+		   }
+		   if(modifiedExists)
+			   return modifiedReplacementBuffer;
+		   else
+			   return unmodifiedReplacementBuffer;
+	   }
    }
 }
