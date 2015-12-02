@@ -151,12 +151,14 @@ class BasicBufferMgr {
 		return null;
    }
    
-//   private Buffer chooseUnpinnedBuffer() {
-//      for (Buffer buff : bufferpool)
-//         if (!buff.isPinned())
-//         return buff;
-//      return null;
-//   }
+   /**
+    * private Buffer chooseUnpinnedBuffer() {
+    * 	for (Buffer buff : bufferpool)
+    * 		if (!buff.isPinned())
+    * 			return buff;
+    * 		return null;
+    * 	} 
+    */
    
    private Buffer chooseUnpinnedBuffer(){
 	   if(bufferPoolMap.containsKey("placeholder"))
