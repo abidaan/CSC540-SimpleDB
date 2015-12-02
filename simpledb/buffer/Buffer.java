@@ -19,6 +19,8 @@ public class Buffer {
    private int pins = 0;
    private int modifiedBy = -1;  // negative means not modified
    private int logSequenceNumber = -1; // negative means no corresponding log record
+   private int numOfReads = 0;
+   private int numOfWrites = 0;
 
    /**
     * Creates a new buffer, wrapping a new 
@@ -129,6 +131,7 @@ public class Buffer {
       if (modifiedBy >= 0) {
          SimpleDB.logMgr().flush(logSequenceNumber);
          contents.write(blk);
+         numOfWrites += 1;
          modifiedBy = -1;
       }
    }
@@ -185,6 +188,7 @@ public class Buffer {
       flush();
       blk = b;
       contents.read(blk);
+      numOfReads += 1;
       pins = 0;
    }
 
@@ -203,5 +207,13 @@ public class Buffer {
       blk = contents.append(filename);
       pins = 0;
       return blk;
+   }
+   
+   public int getNumOfReads(){
+	   return numOfReads;
+   }
+   
+   public int getNumOfWrites(){
+	   return numOfWrites;
    }
 }

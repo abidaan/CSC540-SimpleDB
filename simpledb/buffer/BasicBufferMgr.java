@@ -77,7 +77,7 @@ class BasicBufferMgr {
          buff = chooseUnpinnedBuffer();
          if (buff == null)
             return null;
-         //buff.assignToBlock(blk);
+         buff.assignToBlock(blk);
          Iterator<Map.Entry<Block,Buffer>> iterator = bufferPoolMap.entrySet().iterator();
          while(iterator.hasNext()){
        	  Map.Entry<Block, Buffer> entry = iterator.next();
@@ -185,6 +185,15 @@ class BasicBufferMgr {
 		   else
 			   return unmodifiedReplacementBuffer;
 	   }
+   }
+   
+   /**
+    * Returns statistics related to number of reads and writes
+    * for each individual buffer
+    */
+   public void getStatistics(){
+	   for(Buffer buff: bufferPoolMap.values())
+		   System.out.println("Number of reads: "+buff.getNumOfReads()+"; Number of writes: "+buff.getNumOfWrites());
    }
    
    /**

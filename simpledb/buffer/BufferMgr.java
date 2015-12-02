@@ -123,6 +123,14 @@ public class BufferMgr {
    }
    
    /**
+    * Returns statistics related to number of reads and writes
+    * for each individual buffer
+    */
+   public void getStatistics(){
+	   bufferMgr.getStatistics();
+   }
+   
+   /**
     * Determines whether the map has a mapping from
     * the block to some buffer.
     * @param blk the block to use as a key
